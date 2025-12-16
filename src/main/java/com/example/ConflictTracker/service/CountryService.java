@@ -59,4 +59,22 @@ public class CountryService {
         );
     }
 
+    public CountryDto updateCountry(Long id, CountryDto dto) {
+        Country country = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Country not found"));
+
+        country.setName(dto.name());
+        country.setCode(dto.code());
+
+        repository.save(country);
+        return countryMapper.toDto(country);
+    }
+
+    public void deleteCountry(Long id) {
+        if (!repository.existsById(id)) {
+            throw new RuntimeException("Country not found");
+        }
+        repository.deleteById(id);
+    }
+
 }

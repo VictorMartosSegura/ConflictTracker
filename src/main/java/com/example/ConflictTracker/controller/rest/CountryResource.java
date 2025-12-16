@@ -47,4 +47,17 @@ public class CountryResource {
         return conflictService.getConflictsByCountry(code);
     }
 
+    @PutMapping("/{id}")
+    public CountryDto updateCountry(
+            @PathVariable Long id,
+            @RequestBody CountryDto dto) {
+        return countryService.updateCountry(id, dto);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteCountry(@PathVariable Long id) {
+        countryService.deleteCountry(id);
+    }
+
+
 }

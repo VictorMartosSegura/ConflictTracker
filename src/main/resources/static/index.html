@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="ca">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ConflictTracker — Testimonial</title>
+    <style>
+        body { font-family: system-ui, Arial, sans-serif; margin: 24px; }
+        h1 { margin: 0 0 12px; }
+        .row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin: 12px 0 16px; }
+        button { padding: 8px 12px; cursor: pointer; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; vertical-align: top; }
+        th { background: #f6f6f6; text-align: left; }
+        .muted { color: #666; font-size: 14px; }
+        .error { color: #b00020; white-space: pre-wrap; }
+        .ok { color: #0a7a0a; }
+        .nowrap { white-space: nowrap; }
+    </style>
+</head>
+<body>
+<h1>Conflicts</h1>
+<div class="row">
+    <button id="reloadBtn">Recarregar</button>
+    <span class="muted">Endpoint: <span class="nowrap">GET /api/v1/conflicts</span></span>
+    <span id="status" class="muted"></span>
+</div>
+
+<div id="error" class="error" aria-live="polite"></div>
+
+<table aria-label="Conflicts table">
+    <thead>
+    <tr>
+        <th class="nowrap">ID</th>
+        <th>Nom</th>
+        <th class="nowrap">Start Date</th>
+        <th class="nowrap">Status</th>
+        <th>Descripció</th>
+    </tr>
+    </thead>
+    <tbody id="tbody">
+    <tr><td colspan="5" class="muted">Carregant...</td></tr>
+    </tbody>
+</table>
+
+<script>
+    const tbody = document.getElementById('tbody');
+    const errorBox = document.getElementById('error');
+    const statusEl = document.getElementById('status');
+    const reloadBtn = document.getElementById('reloadBtn');
+
+    function escapeHtml(value) {
+      const s = String(value ?? '');
+      return s.replace(/[&<>"']/g, c => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[c]));
+    }
+
+    function setLoading() {
+      errorBox.textContent = '';
+      statusEl.textContent = 'Carregant...';
+      tbody.innerHTML = `<tr><td colspan="5" class="muted">Carregant...</td></tr>`;
+    }
+
+    function setError(msg) {
+      statusEl.textContent = '';
+      errorBox.textContent = msg;
+    }
+
+    function setOkInfo(count) {
+      errorBox.textContent = '';
+      statusEl.innerHTML = `<span class="ok">OK</span> — ${count} registres`;
+    }
+
+    async function loadConflicts() {
+      setLoading();
+      try {
+        const res = await fetch('/api/v1/conflicts', {
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (!res.ok) {
+          const text = await res.text().catch(() => '');
+          throw new Error(`HTTP ${res.status} ${res.statusText}\n${text}`);
+        }
+
+        const data = await res.json();
+
+        if (!Array.isArray(data)) {
+          throw new Error('La resposta no és una llista JSON.');
+        }
+
+        if (data.length === 0) {
+          setOkInfo(0);
+          tbody.innerHTML = `<tr><td colspan="5" class="muted">No hi ha conflictes.</td></tr>`;
+          return;
+        }
+
+        setOkInfo(data.length);
+
+        tbody.innerHTML = data.map(c => `
+          <tr>
+            <td class="nowrap">${escapeHtml(c.id)}</td>
+            <td>${escapeHtml(c.name)}</td>
+            <td class="nowrap">${escapeHtml(c.startDate)}</td>
+            <td class="nowrap">${escapeHtml(c.status)}</td>
+            <td>${escapeHtml(c.description)}</td>
+          </tr>
+        `).join('');
+
+      } catch (err) {
+        setError(`Error carregant conflictes:\n${err.message}`);
+        tbody.innerHTML = `<tr><td colspan="5" class="muted">—</td></tr>`;
+      }
+    }
+
+    reloadBtn.addEventListener('click', loadConflicts);
+    loadConflicts();
+</script>
+</body>
+</html>
