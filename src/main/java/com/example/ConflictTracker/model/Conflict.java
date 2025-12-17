@@ -2,7 +2,9 @@ package com.example.ConflictTracker.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -30,6 +32,12 @@ public class Conflict {
             inverseJoinColumns = @JoinColumn(name = "country_id")
     )
     private Set<Country> countries = new HashSet<>();
+
+    @OneToMany(mappedBy = "conflict", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Faction> factions = new ArrayList<>();
+
+    @OneToMany(mappedBy = "conflict", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Event> events = new ArrayList<>();
 
     // ===== GETTERS =====
 

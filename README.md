@@ -87,7 +87,16 @@ Tots els endpoints de l’API comencen per: http://localhost:8080/api/v1
 
 ---
 
-## Com provar els endpoints
+## Proves dels endpoints
 
-Els endpoints s’han provat utilitzant el **HTTP Client integrat d’IntelliJ IDEA**.
+Els endpoints de l’API s’han provat utilitzant el plugin HttpRequest
+d’IntelliJ IDEA Community Edition.
+
+S’ha gravat un vídeo demostratiu on es pot veure el funcionament
+dels principals endpoints (GET, POST, PUT i DELETE), així com
+les relacions entre entitats.
+
+Enllaç al vídeo:
+https://drive.google.com/file/d/1K6ueMWPzvVRusCprs65dA0pm_O-uby4I/view?usp=drive_link
+
 

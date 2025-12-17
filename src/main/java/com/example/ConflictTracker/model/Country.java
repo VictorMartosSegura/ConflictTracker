@@ -2,6 +2,9 @@ package com.example.ConflictTracker.model;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "country")
 public class Country {
@@ -15,6 +18,8 @@ public class Country {
     @Column(unique = true)
     private String code;
 
+    @ManyToMany(mappedBy = "countries")
+    private Set<Conflict> conflicts = new HashSet<>();
 
     public Long getId() {
         return id;
