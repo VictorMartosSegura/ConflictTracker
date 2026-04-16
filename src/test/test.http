@@ -1,5 +1,21 @@
 //Conflict
 
-### Get/Conflict: Esta petición devuelve la lista completa de conflictos almacenados en la API
-GET http://localhost:8080/api/v1/conflicts
+### Get conflicts
+GET https://conflicttracker-production-b460.up.railway.app/api/v1/conflicts
 Accept: application/json
+
+### Create conflict id 3
+POST https://conflicttracker-production-b460.up.railway.app/api/v1/conflicts
+Content-Type: application/json
+
+{
+  "id": 3,
+  "name": "Test Conflict Railway",
+  "startDate": "2024-01-01",
+  "status": "ACTIVE",
+  "description": "Conflicto de prueba creado desde IntelliJ"
+}
+
+### Delete conflict id 3
+DELETE https://conflicttracker-production-b460.up.railway.app/api/v1/conflicts/3
+
