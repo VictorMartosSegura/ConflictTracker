@@ -14,7 +14,7 @@ public class Event {
 
     private String location;
 
-    @Lob
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     @ManyToOne
