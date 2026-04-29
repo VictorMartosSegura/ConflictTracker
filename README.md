@@ -125,8 +125,6 @@ SPRING_SQL_INIT_MODE=never
 FRONTEND_URL=https://conflict-monitor-nu.vercel.app
 ```
 
-> Nota: la contrasenya real de Supabase no s'ha de pujar mai al repositori. S'ha de configurar només al panell de Railway.
-
 ### Desenvolupament local
 
 Si no es configuren variables d'entorn, l'aplicació utilitza H2 en memòria:
