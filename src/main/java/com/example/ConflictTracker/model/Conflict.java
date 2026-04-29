@@ -22,7 +22,7 @@ public class Conflict {
     @Enumerated(EnumType.STRING)
     private ConflictStatus status;
 
-    @Lob
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     @ManyToMany
